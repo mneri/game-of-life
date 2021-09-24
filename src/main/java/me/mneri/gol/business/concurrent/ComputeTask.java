@@ -63,8 +63,9 @@ public class ComputeTask extends RecursiveTask<Integer> {
                     int x = (i + k + world.getWidth()) % world.getWidth();
                     int y = (j + l + world.getHeight()) % world.getHeight();
 
-                    if (world.get(x, y))
+                    if (world.get(x, y)) {
                         count++;
+                    }
                 }
             }
         }
