@@ -2,7 +2,6 @@ package me.mneri.gol;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.CreationException;
-import com.google.inject.matcher.Matchers;
 import com.google.inject.name.Names;
 import com.google.inject.spi.Message;
 import me.mneri.gol.data.converter.ColorTypeConverter;
