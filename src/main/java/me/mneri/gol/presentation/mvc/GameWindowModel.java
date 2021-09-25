@@ -21,6 +21,7 @@ public class GameWindowModel {
     private World world;
 
     @Inject
+    @SuppressWarnings("unused")
     private void postConstruct(
             @Named("me.mneri.gol.world-height") int defaultWorldHeight,
             @Named("me.mneri.gol.world-width") int defaultWorldWidth) {

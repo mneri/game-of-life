@@ -2,9 +2,13 @@ package me.mneri.gol;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.CreationException;
+import com.google.inject.matcher.Matchers;
 import com.google.inject.name.Names;
 import com.google.inject.spi.Message;
+import me.mneri.gol.data.converter.ColorTypeConverter;
+import me.mneri.gol.data.converter.SubclassMatcher;
 
+import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,6 +18,7 @@ import java.util.Properties;
 public class GameModule extends AbstractModule {
     @Override
     protected void configure() {
+        binder().convertToTypes(new SubclassMatcher(Color.class), new ColorTypeConverter());
         Names.bindProperties(binder(), getProperties());
     }
 

@@ -23,6 +23,7 @@ public class GameWindowView extends JFrame {
     private JButton stopButton;
 
     @Inject
+    @SuppressWarnings("unused")
     private void postConstruct(
             @Named("me.mneri.gol.panel-height") int defaultPanelHeight,
             @Named("me.mneri.gol.panel-width") int defaultPanelWidth) {

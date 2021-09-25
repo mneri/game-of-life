@@ -10,6 +10,7 @@ import java.util.concurrent.ForkJoinPool;
 public class GameServiceImpl implements GameService {
     @Inject
     @Named("me.mneri.gol.task-threshold")
+    @SuppressWarnings("unused")
     private int defaultTaskThreshold;
 
     private final ForkJoinPool pool = new ForkJoinPool();

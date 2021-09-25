@@ -30,13 +30,14 @@ public class GameWindowController {
     }
 
     @Inject
+    @SuppressWarnings("unused")
     private void postConstruct(
-            @Named("me.mneri.gol.background-color") String defaultBackgroundColor,
+            @Named("me.mneri.gol.background-color") Color defaultBackgroundColor,
             @Named("me.mneri.gol.cell-size") int defaultCellSizePx,
-            @Named("me.mneri.gol.foreground-color") String defaultForegroundColor) {
+            @Named("me.mneri.gol.foreground-color") Color defaultForegroundColor) {
         GamePanel gamePanel = view.getGamePanel();
-        gamePanel.setBackgroundColor(Color.decode(defaultBackgroundColor));
-        gamePanel.setForegroundColor(Color.decode(defaultForegroundColor));
+        gamePanel.setBackgroundColor(defaultBackgroundColor);
+        gamePanel.setForegroundColor(defaultForegroundColor);
         gamePanel.setCellSizePx(defaultCellSizePx);
         gamePanel.setWorld(model.getWorld());
 
