@@ -30,7 +30,7 @@ public class GameWindowController {
     }
 
     @Inject
-    public void postConstruct(
+    private void postConstruct(
             @Named("me.mneri.gol.background-color") String defaultBackgroundColor,
             @Named("me.mneri.gol.cell-size") int defaultCellSizePx,
             @Named("me.mneri.gol.foreground-color") String defaultForegroundColor) {
@@ -47,10 +47,6 @@ public class GameWindowController {
 
         updatePeriodMillis();
         addEventListeners();
-    }
-
-    public void run() {
-        view.setVisible(true);
     }
 
     private void addEventListeners() {
@@ -160,6 +156,10 @@ public class GameWindowController {
             } catch (InterruptedException ignored) {
             }
         })).start();
+    }
+
+    public void run() {
+        view.setVisible(true);
     }
 
     private void updatePeriodMillis() {
