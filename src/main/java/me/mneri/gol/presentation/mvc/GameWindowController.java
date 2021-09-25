@@ -3,18 +3,16 @@ package me.mneri.gol.presentation.mvc;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import me.mneri.gol.business.service.GameService;
-import me.mneri.gol.data.config.Configuration;
 import me.mneri.gol.presentation.component.GamePanel;
 import me.mneri.gol.presentation.util.FPS;
 
+import javax.inject.Named;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class GameWindowController {
-    private final Configuration config;
-
     private final GameWindowModel model;
 
     private final GameService service;
@@ -25,27 +23,33 @@ public class GameWindowController {
     public GameWindowController(
             Provider<GameWindowView> viewProvider,
             Provider<GameWindowModel> modelProvider,
-            Provider<GameService> serviceProvider,
-            Configuration config) {
+            Provider<GameService> serviceProvider) {
         this.view = viewProvider.get();
         this.model = modelProvider.get();
         this.service = serviceProvider.get();
-        this.config = config;
     }
 
-    public void run() {
+    @Inject
+    public void postConstruct(
+            @Named("me.mneri.gol.background-color") String defaultBackgroundColor,
+            @Named("me.mneri.gol.cell-size") int defaultCellSizePx,
+            @Named("me.mneri.gol.foreground-color") String defaultForegroundColor) {
         GamePanel gamePanel = view.getGamePanel();
-        gamePanel.setBackgroundColor(config.getDefaultBackgroundColor());
-        gamePanel.setForegroundColor(config.getDefaultForegroundColor());
-        gamePanel.setCellSizePx(config.getDefaultCellSizePx());
+        gamePanel.setBackgroundColor(Color.decode(defaultBackgroundColor));
+        gamePanel.setForegroundColor(Color.decode(defaultForegroundColor));
+        gamePanel.setCellSizePx(defaultCellSizePx);
         gamePanel.setWorld(model.getWorld());
+
+        view.getStopButton().setEnabled(false);
 
         view.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         view.setLocationRelativeTo(null);
 
         updatePeriodMillis();
         addEventListeners();
+    }
 
+    public void run() {
         view.setVisible(true);
     }
 

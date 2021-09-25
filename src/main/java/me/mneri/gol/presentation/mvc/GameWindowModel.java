@@ -1,10 +1,11 @@
 package me.mneri.gol.presentation.mvc;
 
-import com.google.inject.Inject;
 import lombok.Getter;
 import lombok.Setter;
-import me.mneri.gol.data.config.Configuration;
 import me.mneri.gol.data.model.World;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 
 @Getter
 @Setter
@@ -20,7 +21,9 @@ public class GameWindowModel {
     private World world;
 
     @Inject
-    public GameWindowModel(Configuration config) {
-        world = new World(config.getDefaultWorldWidth(), config.getDefaultWorldHeight());
+    private void postConstruct(
+            @Named("me.mneri.gol.world-height") int defaultWorldHeight,
+            @Named("me.mneri.gol.world-width") int defaultWorldWidth) {
+        world = new World(defaultWorldWidth, defaultWorldHeight);
     }
 }

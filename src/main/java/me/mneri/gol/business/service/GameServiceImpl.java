@@ -1,25 +1,22 @@
 package me.mneri.gol.business.service;
 
-import com.google.inject.Inject;
 import me.mneri.gol.business.concurrent.ComputeTask;
-import me.mneri.gol.data.config.Configuration;
 import me.mneri.gol.data.model.World;
 
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.util.concurrent.ForkJoinPool;
 
 public class GameServiceImpl implements GameService {
-    private final Configuration config;
+    @Inject
+    @Named("me.mneri.gol.task-threshold")
+    private int defaultTaskThreshold;
 
     private final ForkJoinPool pool = new ForkJoinPool();
 
-    @Inject
-    public GameServiceImpl(Configuration config) {
-        this.config = config;
-    }
-
     @Override
     public void evolve(World world) {
-        pool.invoke(new ComputeTask(world, config.getDefaultTaskThreshold()));
+        pool.invoke(new ComputeTask(world, defaultTaskThreshold));
         world.step();
     }
 }
