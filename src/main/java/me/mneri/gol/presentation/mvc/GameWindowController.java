@@ -81,7 +81,6 @@ public class GameWindowController {
         // Initialise the state of the stop button.
         view.getStopButton().setEnabled(false);
 
-
         // Initialise the state of the game window.
         view.setLocationRelativeTo(null);
 
