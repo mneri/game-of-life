@@ -20,7 +20,6 @@ import java.awt.event.MouseEvent;
  * @author Massimo Neri
  * @see GameWindowModel
  * @see GameWindowView
- * @see GameService
  */
 public class GameWindowController {
     /**
@@ -40,7 +39,6 @@ public class GameWindowController {
      *
      * @param viewProvider    A provider of {@link GameWindowView}.
      * @param modelProvider   A provider of {@link GameWindowModel}.
-     * @param serviceProvider A provider of {@link GameService}.
      */
     @Inject
     protected GameWindowController(
