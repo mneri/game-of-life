@@ -29,11 +29,6 @@ public class GameWindowController {
     private final GameWindowModel model;
 
     /**
-     * The game service, in charge of the business logic.
-     */
-    private final GameService service;
-
-    /**
      * The game window view, containing the window frame and all the components.
      */
     private final GameWindowView view;
@@ -50,11 +45,9 @@ public class GameWindowController {
     @Inject
     protected GameWindowController(
             Provider<GameWindowView> viewProvider,
-            Provider<GameWindowModel> modelProvider,
-            Provider<GameService> serviceProvider) {
+            Provider<GameWindowModel> modelProvider) {
         this.view = viewProvider.get();
         this.model = modelProvider.get();
-        this.service = serviceProvider.get();
     }
 
     /**
@@ -95,6 +88,13 @@ public class GameWindowController {
      * Add the event listeners to the components of the game window.
      */
     protected void addEventListeners() {
+        // Initialise the listener to the window model to get game updates. Every update should repaint the game panel.
+        model.setWorldUpdateListener(() -> {
+            view.getGamePanel().repaint();
+            Toolkit.getDefaultToolkit().sync();
+        });
+
+        // Set the close event listener.
         view.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         // Initialise the listeners for the start and the stop buttons:
@@ -107,7 +107,7 @@ public class GameWindowController {
             public void mouseClicked(MouseEvent e) {
                 startButton.setEnabled(false);
                 stopButton.setEnabled(true);
-                play();
+                model.play();
             }
         });
         stopButton.addMouseListener(new MouseAdapter() {
@@ -115,7 +115,7 @@ public class GameWindowController {
             public void mouseClicked(MouseEvent e) {
                 startButton.setEnabled(true);
                 stopButton.setEnabled(false);
-                pause();
+                model.pause();
             }
         });
 
@@ -223,37 +223,6 @@ public class GameWindowController {
                 }
             }
         });
-    }
-
-    /**
-     * Stop the game.
-     */
-    protected void pause() {
-        model.setRunning(false);
-    }
-
-    /**
-     * Start the game.
-     * <p>
-     * The game is run on a background thread
-     */
-    @SuppressWarnings("BusyWait") // Thread.sleep(long) is not a busy-wait
-    protected void play() {
-        model.setRunning(true);
-
-        (new Thread(() -> {
-            try {
-                while (model.isRunning()) {
-                    service.evolve(model.getWorld());
-
-                    view.getGamePanel().repaint();
-                    Toolkit.getDefaultToolkit().sync();
-
-                    Thread.sleep(model.getPeriodMillis());
-                }
-            } catch (InterruptedException ignored) {
-            }
-        })).start();
     }
 
     /**
