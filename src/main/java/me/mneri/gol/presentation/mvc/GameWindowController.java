@@ -2,7 +2,6 @@ package me.mneri.gol.presentation.mvc;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import me.mneri.gol.business.service.GameService;
 import me.mneri.gol.presentation.component.GamePanel;
 import me.mneri.gol.presentation.util.FPS;
 
