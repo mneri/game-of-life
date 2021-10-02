@@ -38,6 +38,9 @@ public class GameWindowModel {
      * event implements this interface. When an update happens the method {@code onWorldUpdate()} is called.
      */
     public interface WorldUpdateListener {
+        /**
+         * Called every time the world is updated.
+         */
         void onWorldUpdate();
     }
 

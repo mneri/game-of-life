@@ -28,24 +28,59 @@ import java.util.concurrent.RecursiveTask;
  * @author Massimo Neri
  */
 public class ComputeTask extends RecursiveTask<Integer> {
+    /**
+     * Number of alive neighbours required to make a cell die of loneliness.
+     */
     private static final int UNDERPOPULATION_THRESHOLD = 2;
 
+    /**
+     * Number of alive neighbours required to make a cell die for overcrowding.
+     */
     private static final int OVERPOPULATION_THRESHOLD = 3;
 
+    /**
+     * Number of alive neighbours required to make a cell born for reproduction.
+     */
     private static final int REPRODUCTION_THRESHOLD = 3;
 
+    /**
+     * End y-index for processing.
+     */
     private int end;
 
+    /**
+     * Start y-index for processing.
+     */
     private int start;
 
+    /**
+     * Maximum number of columns for a single thread to process.
+     */
     private final int threshold;
 
+    /**
+     * The Game of life world.
+     */
     private World world;
 
+    /**
+     * Create a new {@code ComputeTask} instance.
+     *
+     * @param world     The Game of Life world.
+     * @param threshold The maximum number of columns a single thread can process.
+     */
     public ComputeTask(final World world, final int threshold) {
         this(world, threshold, 0, world.getWidth());
     }
 
+    /**
+     * Create a new {@code ComputeTask} instance.
+     *
+     * @param world     The Game of Life world.
+     * @param threshold The maximum number of columns a single thread can process.
+     * @param start     The start y-index of the columns to process.
+     * @param end       The end y-index of the columns to process.
+     */
     private ComputeTask(final World world, final int threshold, final int start, final int end) {
         this.world = world;
         this.threshold = threshold;

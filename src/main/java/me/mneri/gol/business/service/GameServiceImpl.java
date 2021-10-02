@@ -31,11 +31,17 @@ import java.util.concurrent.ForkJoinPool;
  * @author Massimo Neri
  */
 public class GameServiceImpl implements GameService {
+    /**
+     * The maximum number of world's columns a single thread can process.
+     */
     @Inject
     @Named("me.mneri.gol.task-threshold")
     @SuppressWarnings("unused")
     private int defaultTaskThreshold;
 
+    /**
+     * The pool of thread processing.
+     */
     private final ForkJoinPool pool = new ForkJoinPool();
 
     /**

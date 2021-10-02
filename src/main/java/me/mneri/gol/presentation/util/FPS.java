@@ -28,12 +28,39 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 public enum FPS {
+    /**
+     * Slowest game execution speed.
+     */
     SLOWEST("Slowest", 1000 / 2),
+
+    /**
+     * Slower game execution speed.
+     */
     SLOWER("Slower", 1000 / 15),
+
+    /**
+     * Slow game execution speed.
+     */
     SLOW("Slow", 1000 / 30),
+
+    /**
+     * Normal game execution speed.
+     */
     NORMAL("Normal", 1000 / 60),
+
+    /**
+     * Fast game execution speed.
+     */
     FAST("Fast", 1000 / 120),
+
+    /**
+     * Faster game execution speed.
+     */
     FASTER("Faster", 1000 / 240),
+
+    /**
+     * Fastest game execution speed.
+     */
     FASTEST("Fastest", 1000 / 480);
 
     /**

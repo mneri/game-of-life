@@ -26,6 +26,9 @@ import lombok.Getter;
  * @author Massimo Neri
  */
 public class World {
+    /**
+     * The current state of the world.
+     */
     private boolean[][] curr;
 
     /**
@@ -34,6 +37,9 @@ public class World {
     @Getter
     private int height;
 
+    /**
+     * The future state of the world.
+     */
     private boolean[][] next;
 
     /**
@@ -72,8 +78,9 @@ public class World {
 
     /**
      * Set the state of the cell at the given coordinates.
-     * @param i The horizontal coordinate.
-     * @param j The vertical coordinate.
+     *
+     * @param i   The horizontal coordinate.
+     * @param j   The vertical coordinate.
      * @param val {@code true} if the cell is alive, {@code false} otherwise.
      */
     public void set(final int i, final int j, final boolean val) {
@@ -84,10 +91,20 @@ public class World {
         curr[i][j] = val;
     }
 
+    /**
+     * Set the state of the cell at the given coordinates for the next generation.
+     *
+     * @param i   The horizontal coordinate.
+     * @param j   The vertical coordinate.
+     * @param val {@code true} if the cell is alive, {@code false} otherwise.
+     */
     public void setNext(final int i, final int j, final boolean val) {
         next[i][j] = val;
     }
 
+    /**
+     * Set the future state of the world as the current state.
+     */
     public void step() {
         boolean[][] hold = curr;
         curr = next;
