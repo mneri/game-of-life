@@ -7,77 +7,141 @@ import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 
+/**
+ * Panel for displaying the game.
+ *
+ * @author Massimo Neri
+ */
 public class GamePanel extends JPanel {
+    /**
+     * The background color (or the color of a dead cell).
+     */
     @Setter
     private Color backgroundColor;
 
+    /**
+     * The size of a cell in pixels.
+     */
     @Setter
     private int cellSizePx;
 
+    /**
+     * The foreground color (or the color of a live cell).
+     */
     @Setter
     private Color foregroundColor;
 
+    /**
+     * The horizontal offset the world in pixels.
+     */
     private int panX;
 
+    /**
+     * The vertical offset of the world in pixels.
+     */
     private int panY;
 
-    private final RenderingHints renderingHints = new RenderingHints(
-            RenderingHints.KEY_TEXT_ANTIALIASING,
-            RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-
+    /**
+     * The world to paint.
+     */
     @Setter
     private World world;
 
-    private void doPaintComponent(final Graphics2D g) {
-        g.setRenderingHints(renderingHints);
+    /**
+     * Convenience method on top of {@link GamePanel#paintComponent(Graphics)} to receive a {@link Graphics2D} object.
+     *
+     * @param g The {@link Graphics2D} object to protect.
+     */
+    protected void doPaintComponent(final Graphics2D g) {
+        Color originalColor = g.getColor();
+
         g.setColor(backgroundColor);
         g.fillRect(0, 0, getWidth(), getHeight());
-        g.setColor(foregroundColor);
 
-        // Get the world coordinates of the panel's top left corner.
-        final int minWorldX = translatePanelXCoordToWorldXCoord(0);
-        final int minWorldY = translatePanelYCoordToWorldYCoord(0);
+        if (world != null) {
+            g.setColor(foregroundColor);
 
-        // Get the world coordinates of the panel's bottom right corner.
-        final int maxWorldX = translatePanelXCoordToWorldXCoord(getWidth());
-        final int maxWorldY = translatePanelYCoordToWorldYCoord(getHeight());
+            // Get the world coordinates of the panel's top left corner.
+            final int minWorldX = translatePanelXCoordToWorldXCoord(0);
+            final int minWorldY = translatePanelYCoordToWorldYCoord(0);
 
-        // Paint the cells between to panel's top left and bottom right corners.
-        for (int worldX = minWorldX; worldX <= maxWorldX; worldX++) {
-            for (int worldY = minWorldY; worldY <= maxWorldY; worldY++) {
-                if (world.get(worldX, worldY)) {
-                    int panelX = translateWorldXCoordToPanelXCoord(worldX);
-                    int panelY = translateWorldYCoordToPanelYCoord(worldY);
-                    g.fillRect(panelX, panelY, cellSizePx, cellSizePx);
+            // Get the world coordinates of the panel's bottom right corner.
+            final int maxWorldX = translatePanelXCoordToWorldXCoord(getWidth());
+            final int maxWorldY = translatePanelYCoordToWorldYCoord(getHeight());
+
+            // Paint the cells between to panel's top left and bottom right corners.
+            for (int worldX = minWorldX; worldX <= maxWorldX; worldX++) {
+                for (int worldY = minWorldY; worldY <= maxWorldY; worldY++) {
+                    if (world.get(worldX, worldY)) {
+                        int panelX = translateWorldXCoordToPanelXCoord(worldX);
+                        int panelY = translateWorldYCoordToPanelYCoord(worldY);
+                        g.fillRect(panelX, panelY, cellSizePx, cellSizePx);
+                    }
                 }
             }
         }
+
+        g.setColor(originalColor);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param g The {@code Graphics} object to protect.
+     */
     @Override
     public void paintComponent(final Graphics g) {
         doPaintComponent((Graphics2D) g);
     }
 
+    /**
+     * Increase or decrease the horizontal and vertical offset.
+     *
+     * @param dx The horizontal movement in pixels. Can be negative.
+     * @param dy The vertical movement in pixels. Can be negative.
+     */
     public void pan(final int dx, final int dy) {
         panX = Math.max(-world.getWidth() * cellSizePx + getWidth(), Math.min(0, panX + dx));
         panY = Math.max(-world.getHeight() * cellSizePx + getHeight(), Math.min(0, panY + dy));
     }
 
+    /**
+     * Translate an x-coordinate from the panel's space to the world's space.
+     *
+     * @param panelXCoord An x-coordinate in the panel's space.
+     * @return The corresponding x-coordinate in the world's space.
+     */
     public int translatePanelXCoordToWorldXCoord(final int panelXCoord) {
         return (panelXCoord - panX) / cellSizePx;
     }
 
+    /**
+     * Translate a y-coordinate from the panel's space to the world's space.
+     *
+     * @param panelYCoord A y-coordinate in the panel's space.
+     * @return The corresponding y-coordinate in the world's space.
+     */
     public int translatePanelYCoordToWorldYCoord(final int panelYCoord) {
         return (panelYCoord - panY) / cellSizePx;
     }
 
+    /**
+     * Translate an x-coordinate from the world's space to the panel's space.
+     *
+     * @param worldXCoord An x-coordinate in the world's space.
+     * @return The corresponding x-coordinate in the panel's space.
+     */
     private int translateWorldXCoordToPanelXCoord(final int worldXCoord) {
         return worldXCoord * cellSizePx + panX;
     }
 
+    /**
+     * Translate an y-coordinate from the world's space to the panel's space.
+     *
+     * @param worldYCoord An y-coordinate in the world's space.
+     * @return The corresponding x-coordinate in the panel's space.
+     */
     private int translateWorldYCoordToPanelYCoord(final int worldYCoord) {
         return worldYCoord * cellSizePx + panY;
     }

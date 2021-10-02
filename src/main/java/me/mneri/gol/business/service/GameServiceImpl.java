@@ -7,6 +7,11 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.concurrent.ForkJoinPool;
 
+/**
+ * Default implementation of {@link GameService}.
+ *
+ * @author Massimo Neri
+ */
 public class GameServiceImpl implements GameService {
     @Inject
     @Named("me.mneri.gol.task-threshold")
@@ -15,6 +20,11 @@ public class GameServiceImpl implements GameService {
 
     private final ForkJoinPool pool = new ForkJoinPool();
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param world The world.
+     */
     @Override
     public void evolve(final World world) {
         pool.invoke(new ComputeTask(world, defaultTaskThreshold));

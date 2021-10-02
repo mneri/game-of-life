@@ -9,7 +9,16 @@ import me.mneri.gol.data.model.World;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+/**
+ * Model class for the game window.
+ *
+ * @author Massimo Neri
+ */
 public class GameWindowModel {
+    /**
+     * The listener interface for receiving world update events. The class that is interested in processing an update
+     * event implements this interface. When an update happens the method {@code onWorldUpdate()} is called.
+     */
     public interface WorldUpdateListener {
         void onWorldUpdate();
     }
@@ -19,36 +28,65 @@ public class GameWindowModel {
      */
     private final GameService gameService;
 
+    /**
+     * The x-coordinate of the last mouse drag motion.
+     */
     @Getter
     @Setter
     private int lastDragX;
 
+    /**
+     * The y-coordinate of the last mouse drag motion.
+     */
     @Getter
     @Setter
     private int lastDragY;
 
+    /**
+     * The sleep period in milliseconds between game updates.
+     */
     @Getter
     @Setter
     private int periodMillis;
 
+    /**
+     * {@code true} if the game is running, {@code false} otherwise.
+     */
     @Getter
     @Setter
     private boolean running;
 
+    /**
+     * The game world.
+     */
     @Getter
     @Setter
     private World world;
 
+    /**
+     * The listener to notify after each game update.
+     */
     @Setter
     private WorldUpdateListener worldUpdateListener;
 
+    /**
+     * Create a new {@code GameWindowModel} instance.
+     *
+     * @param serviceProvider A provider of {@link GameService} instances.
+     */
     @Inject
     protected GameWindowModel(final Provider<GameService> serviceProvider) {
         this.gameService = serviceProvider.get();
     }
 
+    /**
+     * Initialise the model.
+     *
+     * @param defaultWorldHeight The default world height.
+     * @param defaultWorldWidth  The default world width.
+     */
     @Inject
-    @SuppressWarnings("unused")
+    @SuppressWarnings("unused") // Invoked after construction by the IoC framework.
     private void postConstruct(
             @Named("me.mneri.gol.world-height") final int defaultWorldHeight,
             @Named("me.mneri.gol.world-width") final int defaultWorldWidth) {

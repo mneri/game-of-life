@@ -124,9 +124,7 @@ public class GameWindowController {
         // Initialise the listener for the FPS combo box. When the user changes the value of the combo box the game
         // should speed up or slow down accordingly.
         final JComboBox<FPS> fpsComboBox = view.getFpsComboBox();
-        fpsComboBox.addActionListener(ignored -> {
-            updatePeriodMillis();
-        });
+        fpsComboBox.addActionListener(ignored -> updatePeriodMillis());
 
         // Initialise the listeners for the game panel:
         //     * the user can create cells using the left mouse button;

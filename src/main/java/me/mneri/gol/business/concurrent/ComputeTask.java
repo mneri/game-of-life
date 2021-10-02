@@ -4,6 +4,11 @@ import me.mneri.gol.data.model.World;
 
 import java.util.concurrent.RecursiveTask;
 
+/**
+ * Update the state of the world in a multi-threaded fashion.
+ *
+ * @author Massimo Neri
+ */
 public class ComputeTask extends RecursiveTask<Integer> {
     private static final int UNDERPOPULATION_THRESHOLD = 2;
 
