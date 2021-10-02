@@ -9,7 +9,7 @@ public class SubclassMatcher extends AbstractMatcher<TypeLiteral<?>> {
     private final Class<?> type;
 
     @Override
-    public boolean matches(TypeLiteral<?> toType) {
+    public boolean matches(final TypeLiteral<?> toType) {
         return toType.getRawType().isAssignableFrom(type);
     }
 }

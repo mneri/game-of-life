@@ -3,8 +3,11 @@ package me.mneri.gol.presentation.component;
 import lombok.Setter;
 import me.mneri.gol.data.model.World;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 
 public class GamePanel extends JPanel {
     @Setter
@@ -27,7 +30,7 @@ public class GamePanel extends JPanel {
     @Setter
     private World world;
 
-    private void doPaintComponent(Graphics2D g) {
+    private void doPaintComponent(final Graphics2D g) {
         g.setRenderingHints(renderingHints);
         g.setColor(backgroundColor);
         g.fillRect(0, 0, getWidth(), getHeight());
@@ -54,28 +57,28 @@ public class GamePanel extends JPanel {
     }
 
     @Override
-    public void paintComponent(Graphics g) {
+    public void paintComponent(final Graphics g) {
         doPaintComponent((Graphics2D) g);
     }
 
-    public void pan(int dx, int dy) {
+    public void pan(final int dx, final int dy) {
         panX = Math.max(-world.getWidth() * cellSizePx + getWidth(), Math.min(0, panX + dx));
         panY = Math.max(-world.getHeight() * cellSizePx + getHeight(), Math.min(0, panY + dy));
     }
 
-    public int translatePanelXCoordToWorldXCoord(int panelXCoord) {
+    public int translatePanelXCoordToWorldXCoord(final int panelXCoord) {
         return (panelXCoord - panX) / cellSizePx;
     }
 
-    public int translatePanelYCoordToWorldYCoord(int panelYCoord) {
+    public int translatePanelYCoordToWorldYCoord(final int panelYCoord) {
         return (panelYCoord - panY) / cellSizePx;
     }
 
-    private int translateWorldXCoordToPanelXCoord(int worldXCoord) {
+    private int translateWorldXCoordToPanelXCoord(final int worldXCoord) {
         return worldXCoord * cellSizePx + panX;
     }
 
-    private int translateWorldYCoordToPanelYCoord(int WorldYCoord) {
-        return WorldYCoord * cellSizePx + panY;
+    private int translateWorldYCoordToPanelYCoord(final int worldYCoord) {
+        return worldYCoord * cellSizePx + panY;
     }
 }

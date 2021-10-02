@@ -6,8 +6,13 @@ import me.mneri.gol.presentation.component.GamePanel;
 import me.mneri.gol.presentation.util.FPS;
 
 import javax.inject.Named;
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -41,8 +46,8 @@ public class GameWindowController {
      */
     @Inject
     protected GameWindowController(
-            Provider<GameWindowView> viewProvider,
-            Provider<GameWindowModel> modelProvider) {
+            final Provider<GameWindowView> viewProvider,
+            final Provider<GameWindowModel> modelProvider) {
         this.view = viewProvider.get();
         this.model = modelProvider.get();
     }
@@ -58,9 +63,9 @@ public class GameWindowController {
     @Inject
     @SuppressWarnings("unused") // Invoked after construction by the IoC framework.
     protected void postConstruct(
-            @Named("me.mneri.gol.background-color") Color defaultBackgroundColor,
-            @Named("me.mneri.gol.cell-size") int defaultCellSizePx,
-            @Named("me.mneri.gol.foreground-color") Color defaultForegroundColor) {
+            @Named("me.mneri.gol.background-color") final Color defaultBackgroundColor,
+            @Named("me.mneri.gol.cell-size") final int defaultCellSizePx,
+            @Named("me.mneri.gol.foreground-color") final Color defaultForegroundColor) {
         // Initialise the state of the game panel.
         GamePanel gamePanel = view.getGamePanel();
         gamePanel.setBackgroundColor(defaultBackgroundColor);
@@ -101,7 +106,7 @@ public class GameWindowController {
         final JButton stopButton = view.getStopButton();
         startButton.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseClicked(final MouseEvent e) {
                 startButton.setEnabled(false);
                 stopButton.setEnabled(true);
                 model.play();
@@ -109,7 +114,7 @@ public class GameWindowController {
         });
         stopButton.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseClicked(final MouseEvent e) {
                 startButton.setEnabled(true);
                 stopButton.setEnabled(false);
                 model.pause();
@@ -143,7 +148,7 @@ public class GameWindowController {
              * @param e The mouse event.
              */
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseClicked(final MouseEvent e) {
                 if (!(SwingUtilities.isLeftMouseButton(e) || SwingUtilities.isRightMouseButton(e))) {
                     return;
                 }
@@ -166,7 +171,7 @@ public class GameWindowController {
              * @param e The mouse event.
              */
             @Override
-            public void mousePressed(MouseEvent e) {
+            public void mousePressed(final MouseEvent e) {
                 if (!SwingUtilities.isMiddleMouseButton(e)) {
                     return;
                 }
@@ -181,7 +186,7 @@ public class GameWindowController {
              * @param e The mouse event.
              */
             @Override
-            public void mouseReleased(MouseEvent e) {
+            public void mouseReleased(final MouseEvent e) {
                 if (!SwingUtilities.isMiddleMouseButton(e)) {
                     return;
                 }
@@ -195,7 +200,7 @@ public class GameWindowController {
              * @param e The mouse event.
              */
             @Override
-            public void mouseDragged(MouseEvent e) {
+            public void mouseDragged(final MouseEvent e) {
                 if (SwingUtilities.isMiddleMouseButton(e)) {
                     int x = e.getX();
                     int y = e.getY();

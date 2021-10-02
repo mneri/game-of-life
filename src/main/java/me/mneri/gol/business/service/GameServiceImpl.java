@@ -16,7 +16,7 @@ public class GameServiceImpl implements GameService {
     private final ForkJoinPool pool = new ForkJoinPool();
 
     @Override
-    public void evolve(World world) {
+    public void evolve(final World world) {
         pool.invoke(new ComputeTask(world, defaultTaskThreshold));
         world.step();
     }

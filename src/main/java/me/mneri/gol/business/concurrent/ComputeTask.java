@@ -5,6 +5,12 @@ import me.mneri.gol.data.model.World;
 import java.util.concurrent.RecursiveTask;
 
 public class ComputeTask extends RecursiveTask<Integer> {
+    private static final int UNDERPOPULATION_THRESHOLD = 2;
+
+    private static final int OVERPOPULATION_THRESHOLD = 3;
+
+    private static final int REPRODUCTION_THRESHOLD = 3;
+
     private int end;
 
     private int start;
@@ -13,11 +19,11 @@ public class ComputeTask extends RecursiveTask<Integer> {
 
     private World world;
 
-    public ComputeTask(World world, int threshold) {
+    public ComputeTask(final World world, final int threshold) {
         this(world, threshold, 0, world.getWidth());
     }
 
-    private ComputeTask(World world, int threshold, int start, int end) {
+    private ComputeTask(final World world, final int threshold, final int start, final int end) {
         this.world = world;
         this.threshold = threshold;
         this.start = start;
@@ -32,16 +38,16 @@ public class ComputeTask extends RecursiveTask<Integer> {
                 int count = getAliveNeighboursCount(i, j);
 
                 if (world.get(i, j)) {
-                    if (count < 2) {
+                    if (count < UNDERPOPULATION_THRESHOLD) {
                         world.setNext(i, j, false);
-                    } else if (count <= 3) {
+                    } else if (count <= OVERPOPULATION_THRESHOLD) {
                         world.setNext(i, j, true);
                         result++;
                     } else {
                         world.setNext(i, j, false);
                     }
                 } else {
-                    if (count == 3) {
+                    if (count == REPRODUCTION_THRESHOLD) {
                         world.setNext(i, j, true);
                         result++;
                     } else {
@@ -54,7 +60,7 @@ public class ComputeTask extends RecursiveTask<Integer> {
         return result;
     }
 
-    private int getAliveNeighboursCount(int i, int j) {
+    private int getAliveNeighboursCount(final int i, final int j) {
         int count = 0;
 
         for (int k = -1; k <= 1; k++) {

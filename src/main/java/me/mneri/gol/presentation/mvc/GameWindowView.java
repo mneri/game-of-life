@@ -6,8 +6,13 @@ import me.mneri.gol.presentation.util.FPS;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 
 /**
  * View for the game window in a Model-View-Controller architecture.
@@ -52,8 +57,8 @@ public class GameWindowView extends JFrame {
     @Inject
     @SuppressWarnings("unused") // Invoked after construction by the IoC framework.
     private void postConstruct(
-            @Named("me.mneri.gol.panel-height") int defaultPanelHeight,
-            @Named("me.mneri.gol.panel-width") int defaultPanelWidth) {
+            @Named("me.mneri.gol.panel-height") final int defaultPanelHeight,
+            @Named("me.mneri.gol.panel-width") final int defaultPanelWidth) {
         setLayout(new BorderLayout());
 
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));

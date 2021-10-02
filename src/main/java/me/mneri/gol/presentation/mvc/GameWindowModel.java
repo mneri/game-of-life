@@ -43,15 +43,15 @@ public class GameWindowModel {
     private WorldUpdateListener worldUpdateListener;
 
     @Inject
-    protected GameWindowModel(Provider<GameService> serviceProvider) {
+    protected GameWindowModel(final Provider<GameService> serviceProvider) {
         this.gameService = serviceProvider.get();
     }
 
     @Inject
     @SuppressWarnings("unused")
     private void postConstruct(
-            @Named("me.mneri.gol.world-height") int defaultWorldHeight,
-            @Named("me.mneri.gol.world-width") int defaultWorldWidth) {
+            @Named("me.mneri.gol.world-height") final int defaultWorldHeight,
+            @Named("me.mneri.gol.world-width") final int defaultWorldWidth) {
         world = new World(defaultWorldWidth, defaultWorldHeight);
     }
 

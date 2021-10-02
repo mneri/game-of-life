@@ -6,21 +6,21 @@ public class World {
     private boolean[][] curr;
 
     @Getter
-    public int height;
+    private int height;
 
     private boolean[][] next;
 
     @Getter
-    public int width;
+    private int width;
 
-    public World(int width, int height) {
+    public World(final int width, final int height) {
         this.width = width;
         this.height = height;
         this.curr = new boolean[width][height];
         this.next = new boolean[width][height];
     }
 
-    public boolean get(int i, int j) {
+    public boolean get(final int i, final int j) {
         if (i < 0 || i >= width || j < 0 || j >= height) {
             return false;
         }
@@ -28,7 +28,7 @@ public class World {
         return curr[i][j];
     }
 
-    public void set(int i, int j, boolean val) {
+    public void set(final int i, final int j, final boolean val) {
         if (i < 0 || i >= width || j < 0 || j >= height) {
             return;
         }
@@ -36,7 +36,7 @@ public class World {
         curr[i][j] = val;
     }
 
-    public void setNext(int i, int j, boolean val) {
+    public void setNext(final int i, final int j, final boolean val) {
         next[i][j] = val;
     }
 
