@@ -109,7 +109,7 @@ public class EvolveTask extends RecursiveAction {
 
     protected void doCompute() {
         for (int j = 0; j < currentWorld.getHeight(); j++) {
-            for (int i = startColumn; i < currentWorld.getWidth(); i++) {
+            for (int i = startColumn; i < endColumn; i++) {
                 int count = currentWorld.getLiveNeighboursCount(i, j);
 
                 if (currentWorld.getState(i, j) == Cell.ALIVE) {
