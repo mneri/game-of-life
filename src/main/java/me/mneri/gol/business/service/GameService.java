@@ -31,7 +31,8 @@ public interface GameService {
     /**
      * Evolve the world.
      *
-     * @param world The world.
+     * @param currentWorld The current state of the world.
+     * @param futureWorld The future state of the world, this is an outbound variable.
      */
-    void evolve(World world);
+    void evolve(World currentWorld, World futureWorld);
 }

@@ -16,11 +16,24 @@
  * limitations under the License.
  */
 
+package me.mneri.gol.data.model;
+
 /**
- * Classes for concurrent execution.
+ * The state of a single cell.
  *
  * @author Massimo Neri
- * @version 1.0
- * @since 1.0
  */
-package me.mneri.gol.business.concurrent;
+public final class Cell {
+    private Cell() {
+    }
+
+    /**
+     * The cell is dead.
+     */
+    public static final int DEAD = 0;
+
+    /**
+     * The cell is alive.
+     */
+    public static final int ALIVE = 1;
+}

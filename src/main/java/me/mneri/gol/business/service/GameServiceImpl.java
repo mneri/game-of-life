@@ -18,7 +18,6 @@
 
 package me.mneri.gol.business.service;
 
-import me.mneri.gol.business.concurrent.ComputeTask;
 import me.mneri.gol.data.model.World;
 
 import javax.inject.Inject;
@@ -36,22 +35,22 @@ public class GameServiceImpl implements GameService {
      */
     @Inject
     @Named("me.mneri.gol.task-threshold")
-    @SuppressWarnings("unused")
+    @SuppressWarnings("unused") // Assigned by the IoC framework.
     private int defaultTaskThreshold;
 
     /**
      * The pool of thread processing.
      */
-    private final ForkJoinPool pool = new ForkJoinPool();
+    private final ForkJoinPool pool = ForkJoinPool.commonPool();
 
     /**
      * {@inheritDoc}
      *
-     * @param world The world.
+     * @param currentWorld The current state of the world.
+     * @param futureWorld  The future state of the world.
      */
     @Override
-    public void evolve(final World world) {
-        pool.invoke(new ComputeTask(world, defaultTaskThreshold));
-        world.step();
+    public void evolve(final World currentWorld, final World futureWorld) {
+        pool.invoke(new EvolveTask(currentWorld, futureWorld, defaultTaskThreshold));
     }
 }

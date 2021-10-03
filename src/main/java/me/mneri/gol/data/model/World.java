@@ -18,49 +18,7 @@
 
 package me.mneri.gol.data.model;
 
-import lombok.Getter;
-
-/**
- * The Game of Life world.
- *
- * @author Massimo Neri
- */
-public class World {
-    /**
-     * The current state of the world.
-     */
-    private boolean[][] curr;
-
-    /**
-     * The height of the world expressed in number of cells.
-     */
-    @Getter
-    private int height;
-
-    /**
-     * The future state of the world.
-     */
-    private boolean[][] next;
-
-    /**
-     * The width of the world expressed in number of cells.
-     */
-    @Getter
-    private int width;
-
-    /**
-     * Construct a new {@code World} instance.
-     *
-     * @param width  The width of the world expressed in number of cells.
-     * @param height The height of the world expressed in number of cells.
-     */
-    public World(final int width, final int height) {
-        this.width = width;
-        this.height = height;
-        this.curr = new boolean[width][height];
-        this.next = new boolean[width][height];
-    }
-
+public interface World {
     /**
      * Return the state of the cell at the given coordinates.
      *
@@ -68,46 +26,44 @@ public class World {
      * @param j The vertical coordinate.
      * @return {@code true} if the cell is alive, {@code false} otherwise.
      */
-    public boolean get(final int i, final int j) {
-        if (i < 0 || i >= width || j < 0 || j >= height) {
-            return false;
-        }
+    int getState(int i, int j);
 
-        return curr[i][j];
-    }
+    /**
+     * Return the number of live cells.
+     *
+     * @return The number of live cells.
+     */
+    int getLiveCellsCount();
+
+    /**
+     * Return the number of live neighbours for the cell at the given coordinates.
+     *
+     * @param i The horizontal coordinate of the cell.
+     * @param j The vertical coordinate of the cell.
+     * @return The number of live neighbours.
+     */
+    int getLiveNeighboursCount(int i, int j);
+
+    /**
+     * Return the world height in number of cells.
+     *
+     * @return The world height.
+     */
+    int getHeight();
+
+    /**
+     * Return the world width in number of cells.
+     *
+     * @return The world width.
+     */
+    int getWidth();
 
     /**
      * Set the state of the cell at the given coordinates.
      *
-     * @param i   The horizontal coordinate.
-     * @param j   The vertical coordinate.
-     * @param val {@code true} if the cell is alive, {@code false} otherwise.
+     * @param i        The horizontal coordinate of the cell.
+     * @param j        The vertical coordinate of the cell.
+     * @param newState The new state of the cell.
      */
-    public void set(final int i, final int j, final boolean val) {
-        if (i < 0 || i >= width || j < 0 || j >= height) {
-            return;
-        }
-
-        curr[i][j] = val;
-    }
-
-    /**
-     * Set the state of the cell at the given coordinates for the next generation.
-     *
-     * @param i   The horizontal coordinate.
-     * @param j   The vertical coordinate.
-     * @param val {@code true} if the cell is alive, {@code false} otherwise.
-     */
-    public void setNext(final int i, final int j, final boolean val) {
-        next[i][j] = val;
-    }
-
-    /**
-     * Set the future state of the world as the current state.
-     */
-    public void step() {
-        boolean[][] hold = curr;
-        curr = next;
-        next = hold;
-    }
+    void setState(int i, int j, int newState);
 }

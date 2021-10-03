@@ -19,6 +19,7 @@
 package me.mneri.gol.presentation.component;
 
 import lombok.Setter;
+import me.mneri.gol.data.model.Cell;
 import me.mneri.gol.data.model.World;
 
 import javax.swing.JPanel;
@@ -91,7 +92,7 @@ public class GamePanel extends JPanel {
             // Paint the cells between to panel's top left and bottom right corners.
             for (int worldX = minWorldX; worldX <= maxWorldX; worldX++) {
                 for (int worldY = minWorldY; worldY <= maxWorldY; worldY++) {
-                    if (world.get(worldX, worldY)) {
+                    if (world.getState(worldX, worldY) == Cell.ALIVE) {
                         int panelX = translateWorldXCoordToPanelXCoord(worldX);
                         int panelY = translateWorldYCoordToPanelYCoord(worldY);
                         g.fillRect(panelX, panelY, cellSizePx, cellSizePx);

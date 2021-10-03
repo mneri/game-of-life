@@ -20,6 +20,7 @@ package me.mneri.gol.presentation.mvc;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import me.mneri.gol.data.model.Cell;
 import me.mneri.gol.presentation.component.GamePanel;
 import me.mneri.gol.presentation.util.FPS;
 
@@ -59,8 +60,8 @@ public class GameWindowController {
      * <p>
      * This constructor is {@code protected} as it is meant to be called only by the IoC framework.
      *
-     * @param viewProvider    A provider of {@link GameWindowView}.
-     * @param modelProvider   A provider of {@link GameWindowModel}.
+     * @param viewProvider  A provider of {@link GameWindowView}.
+     * @param modelProvider A provider of {@link GameWindowModel}.
      */
     @Inject
     protected GameWindowController(
@@ -110,7 +111,9 @@ public class GameWindowController {
     protected void addEventListeners() {
         // Initialise the listener to the window model to get game updates. Every update should repaint the game panel.
         model.setWorldUpdateListener(() -> {
-            view.getGamePanel().repaint();
+            GamePanel gamePanel = view.getGamePanel();
+            gamePanel.setWorld(model.getWorld());
+            gamePanel.repaint();
             Toolkit.getDefaultToolkit().sync();
         });
 
@@ -178,7 +181,7 @@ public class GameWindowController {
 
                 boolean turnAlive = SwingUtilities.isLeftMouseButton(e);
 
-                model.getWorld().set(x, y, turnAlive);
+                model.getWorld().setState(x, y, turnAlive ? Cell.ALIVE : Cell.DEAD);
                 gamePanel.repaint();
             }
 
@@ -236,7 +239,7 @@ public class GameWindowController {
                     int x = gamePanel.translatePanelXCoordToWorldXCoord(e.getX());
                     int y = gamePanel.translatePanelYCoordToWorldYCoord(e.getY());
 
-                    model.getWorld().set(x, y, turnAlive);
+                    model.getWorld().setState(x, y, turnAlive ? Cell.ALIVE : Cell.DEAD);
                     gamePanel.repaint();
                 }
             }

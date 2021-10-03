@@ -22,6 +22,7 @@ import com.google.inject.Provider;
 import lombok.Getter;
 import lombok.Setter;
 import me.mneri.gol.business.service.GameService;
+import me.mneri.gol.data.model.ToroidalWorld;
 import me.mneri.gol.data.model.World;
 
 import javax.inject.Inject;
@@ -78,11 +79,15 @@ public class GameWindowModel {
     private boolean running;
 
     /**
-     * The game world.
+     * The current state of the world.
      */
-    @Getter
     @Setter
-    private World world;
+    private World currentWorld;
+
+    /**
+     * The future state of the world.
+     */
+    private World futureWorld;
 
     /**
      * The listener to notify after each game update.
@@ -111,7 +116,17 @@ public class GameWindowModel {
     private void postConstruct(
             @Named("me.mneri.gol.world-height") final int defaultWorldHeight,
             @Named("me.mneri.gol.world-width") final int defaultWorldWidth) {
-        world = new World(defaultWorldWidth, defaultWorldHeight);
+        currentWorld = new ToroidalWorld(defaultWorldWidth, defaultWorldHeight);
+        futureWorld = new ToroidalWorld(defaultWorldWidth, defaultWorldHeight);
+    }
+
+    /**
+     * Return the world.
+     *
+     * @return The world.
+     */
+    public World getWorld() {
+        return currentWorld;
     }
 
     /**
@@ -137,8 +152,14 @@ public class GameWindowModel {
         (new Thread(() -> {
             try {
                 while (running) {
-                    gameService.evolve(world);
+                    gameService.evolve(currentWorld, futureWorld);
+
+                    World temp = currentWorld;
+                    currentWorld = futureWorld;
+                    futureWorld = temp;
+
                     worldUpdateListener.onWorldUpdate();
+
                     Thread.sleep(periodMillis);
                 }
             } catch (InterruptedException ignored) {
