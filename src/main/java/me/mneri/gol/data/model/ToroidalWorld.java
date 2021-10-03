@@ -61,6 +61,14 @@ public class ToroidalWorld implements World {
         this.cells = new int[height][width];
     }
 
+    private int ensureXCoord(final int x) {
+        return (x % width) + (x >= 0 ? 0 : width);
+    }
+
+    private int ensureYCoord(final int y) {
+        return (y % height) + (y >= 0 ? 0 : height);
+    }
+
     /**
      * Return the state of the cell at the given coordinates.
      *
@@ -70,7 +78,7 @@ public class ToroidalWorld implements World {
      */
     @Override
     public int getState(final int x, final int y) {
-        return cells[(y + height) % height][(x + width) % width];
+        return cells[ensureYCoord(y)][ensureXCoord(x)];
     }
 
     @Override
@@ -99,13 +107,13 @@ public class ToroidalWorld implements World {
      */
     @Override
     public void setState(final int x, final int y, final int newState) {
-        int xCoord = x % width;
-        int yCoord = y % height;
-        int oldState = cells[yCoord][xCoord];
+        int x2 = ensureXCoord(x);
+        int y2 = ensureYCoord(y);
+        int oldState = cells[y2][x2];
 
         if (oldState != newState) {
             liveCellsCount += newState == Cell.ALIVE ? 1 : -1;
-            cells[yCoord][xCoord] = newState;
+            cells[y2][x2] = newState;
         }
     }
 }
