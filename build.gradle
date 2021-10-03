@@ -24,6 +24,11 @@ plugins {
 group 'org.example'
 version '1.0-SNAPSHOT'
 
+checkstyle {
+    configProperties = Map.of(
+            "checkstyle.header.file", "${project.projectDir}/config/java.header")
+}
+
 repositories {
     mavenCentral()
 }
