@@ -73,6 +73,7 @@
 
         <module name="EmptyForIteratorPad"/>
         <module name="GenericWhitespace"/>
+        <module name="Indentation"/>
         <module name="MethodParamPad"/>
         <module name="NoWhitespaceAfter"/>
         <module name="NoWhitespaceBefore"/>

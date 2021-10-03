@@ -81,7 +81,6 @@ public class GameWindowModel {
     /**
      * The current state of the world.
      */
-    @Setter
     private World currentWorld;
 
     /**
