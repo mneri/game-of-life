@@ -19,9 +19,8 @@
 package me.mneri.gol;
 
 import com.google.inject.AbstractModule;
-import com.google.inject.CreationException;
 import com.google.inject.name.Names;
-import com.google.inject.spi.Message;
+import lombok.SneakyThrows;
 import me.mneri.gol.data.converter.ColorTypeConverter;
 import me.mneri.gol.data.converter.SubclassMatcher;
 
@@ -29,7 +28,6 @@ import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 import java.util.Properties;
 
 /**
@@ -39,45 +37,46 @@ import java.util.Properties;
  */
 public final class GameModule extends AbstractModule {
     /**
+     * Properties file name.
+     */
+    private static final String PROPERTIES_FILE_NAME = "application.properties";
+
+    /**
      * Configure the Guice bindings.
      */
     @Override
+    @SneakyThrows(IOException.class)
     protected void configure() {
         binder().convertToTypes(new SubclassMatcher(Color.class), new ColorTypeConverter());
         Names.bindProperties(binder(), getProperties());
     }
 
     /**
-     * Return a {@link Properties} instance for the {@code application.properties} file.
+     * Return a new {@link Properties} instance loaded with the content of the {@code application.properties} file.
      *
      * @return A new properties instance.
+     * @throws IOException If an I/O error occurs.
      */
-    private Properties getProperties() {
-        try {
-            InputStream input = null;
-
-            try {
-                Properties properties = new Properties();
-                String propertiesFileName = "application.properties";
-                input = getClass().getClassLoader().getResourceAsStream(propertiesFileName);
-
-                if (input == null) {
-                    throw new FileNotFoundException(propertiesFileName + " not found in the classpath.");
-                }
-
-                properties.load(input);
-
-                return properties;
-            } finally {
-                if (input != null) {
-                    try {
-                        input.close();
-                    } catch (IOException ignored) {
-                    }
-                }
+    private Properties getProperties() throws IOException {
+        try (InputStream input = getResourceAsStream(PROPERTIES_FILE_NAME)) {
+            if (input == null) {
+                throw new FileNotFoundException(PROPERTIES_FILE_NAME + " not found in the classpath.");
             }
-        } catch (IOException e) {
-            throw new CreationException(List.of(new Message(e.getMessage())));
+
+            Properties properties = new Properties();
+            properties.load(input);
+
+            return properties;
         }
+    }
+
+    /**
+     * Return a new {@link InputStream} associated with the specified resource.
+     *
+     * @param name The name of the resource.
+     * @return A new input stream associated with the specified resource.
+     */
+    private InputStream getResourceAsStream(final String name) {
+        return Thread.currentThread().getContextClassLoader().getResourceAsStream(name);
     }
 }

@@ -20,6 +20,8 @@ package me.mneri.gol.presentation.mvc;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import lombok.AccessLevel;
+import lombok.Getter;
 import me.mneri.gol.data.model.Cell;
 import me.mneri.gol.presentation.component.GamePanel;
 import me.mneri.gol.presentation.util.FPS;
@@ -48,11 +50,13 @@ public class GameWindowController {
     /**
      * The window model, holding the data for this controller.
      */
+    @Getter(AccessLevel.PROTECTED)
     private final GameWindowModel model;
 
     /**
      * The game window view, containing the window frame and all the components.
      */
+    @Getter(AccessLevel.PROTECTED)
     private final GameWindowView view;
 
     /**

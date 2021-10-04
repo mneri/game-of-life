@@ -42,6 +42,8 @@ import java.awt.FlowLayout;
  * @see GameWindowController
  */
 public class GameWindowView extends JFrame {
+    private static final long serialVersionUID = -4995897066996858690L;
+
     /**
      * The FPS combo box.
      */

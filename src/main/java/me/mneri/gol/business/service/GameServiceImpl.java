@@ -18,6 +18,8 @@
 
 package me.mneri.gol.business.service;
 
+import lombok.AccessLevel;
+import lombok.Getter;
 import me.mneri.gol.data.model.World;
 
 import javax.inject.Inject;
@@ -33,6 +35,7 @@ public class GameServiceImpl implements GameService {
     /**
      * The maximum number of world's columns a single thread can process.
      */
+    @Getter(AccessLevel.PROTECTED)
     @Inject
     @Named("me.mneri.gol.task-threshold")
     @SuppressWarnings("unused") // Assigned by the IoC framework.
@@ -41,7 +44,7 @@ public class GameServiceImpl implements GameService {
     /**
      * The pool of thread processing.
      */
-    private final ForkJoinPool pool = ForkJoinPool.commonPool();
+    private final transient ForkJoinPool pool = ForkJoinPool.commonPool();
 
     /**
      * {@inheritDoc}

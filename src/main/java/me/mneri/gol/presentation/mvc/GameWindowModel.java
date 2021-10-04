@@ -19,6 +19,7 @@
 package me.mneri.gol.presentation.mvc;
 
 import com.google.inject.Provider;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import me.mneri.gol.business.service.GameService;
@@ -48,6 +49,7 @@ public class GameWindowModel {
     /**
      * The game service, in charge of the business logic.
      */
+    @Getter(AccessLevel.PROTECTED)
     private final GameService gameService;
 
     /**
@@ -81,16 +83,19 @@ public class GameWindowModel {
     /**
      * The current state of the world.
      */
+    @Getter(AccessLevel.PROTECTED)
     private World currentWorld;
 
     /**
      * The future state of the world.
      */
+    @Getter(AccessLevel.PROTECTED)
     private World futureWorld;
 
     /**
      * The listener to notify after each game update.
      */
+    @Getter(AccessLevel.PROTECTED)
     @Setter
     private WorldUpdateListener worldUpdateListener;
 

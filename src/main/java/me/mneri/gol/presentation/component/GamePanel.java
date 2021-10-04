@@ -18,6 +18,8 @@
 
 package me.mneri.gol.presentation.component;
 
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.Setter;
 import me.mneri.gol.data.model.Cell;
 import me.mneri.gol.data.model.World;
@@ -33,37 +35,45 @@ import java.awt.Graphics2D;
  * @author Massimo Neri
  */
 public class GamePanel extends JPanel {
+    private static final long serialVersionUID = 9142109905749053148L;
+
     /**
-     * The background color (or the color of a dead cell).
+     * The background color (the color of a dead cell).
      */
+    @Getter(AccessLevel.PROTECTED)
     @Setter
     private Color backgroundColor;
 
     /**
      * The size of a cell in pixels.
      */
+    @Getter(AccessLevel.PROTECTED)
     @Setter
     private int cellSizePx;
 
     /**
-     * The foreground color (or the color of a live cell).
+     * The foreground color (the color of a live cell).
      */
+    @Getter(AccessLevel.PROTECTED)
     @Setter
     private Color foregroundColor;
 
     /**
      * The horizontal offset the world in pixels.
      */
+    @Getter(AccessLevel.PROTECTED)
     private int panX;
 
     /**
      * The vertical offset of the world in pixels.
      */
+    @Getter(AccessLevel.PROTECTED)
     private int panY;
 
     /**
      * The world to paint.
      */
+    @Getter(AccessLevel.PROTECTED)
     @Setter
     private World world;
 
@@ -81,16 +91,13 @@ public class GamePanel extends JPanel {
         if (world != null) {
             g.setColor(foregroundColor);
 
-            // Get the world coordinates of the panel's top left corner.
             final int minWorldX = translatePanelXCoordToWorldXCoord(0);
-            final int minWorldY = translatePanelYCoordToWorldYCoord(0);
-
-            // Get the world coordinates of the panel's bottom right corner.
             final int maxWorldX = translatePanelXCoordToWorldXCoord(getWidth());
-            final int maxWorldY = translatePanelYCoordToWorldYCoord(getHeight());
 
-            // Paint the cells between to panel's top left and bottom right corners.
             for (int worldX = minWorldX; worldX <= maxWorldX; worldX++) {
+                final int minWorldY = translatePanelYCoordToWorldYCoord(0);
+                final int maxWorldY = translatePanelYCoordToWorldYCoord(getHeight());
+
                 for (int worldY = minWorldY; worldY <= maxWorldY; worldY++) {
                     if (world.getState(worldX, worldY) == Cell.ALIVE) {
                         int panelX = translateWorldXCoordToPanelXCoord(worldX);

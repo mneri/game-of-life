@@ -18,6 +18,8 @@
 
 package me.mneri.gol.business.service;
 
+import lombok.AccessLevel;
+import lombok.Getter;
 import me.mneri.gol.data.model.Cell;
 import me.mneri.gol.data.model.World;
 
@@ -27,10 +29,12 @@ import java.util.concurrent.RecursiveAction;
  * Update the state of the world in a multi-threaded fashion.
  */
 public class EvolveTask extends RecursiveAction {
+    private static final long serialVersionUID = 7028909669527166538L;
+
     /**
      * Number of alive neighbours required to make a cell die of loneliness.
      */
-    private static final int UNDERPOPULATION_THRESHOLD = 2;
+    private static final int UNDERPOPULATION_THRESHOLD = 1;
 
     /**
      * Number of alive neighbours required to make a cell die for overcrowding.
@@ -45,31 +49,34 @@ public class EvolveTask extends RecursiveAction {
     /**
      * The current state of the world.
      */
+    @Getter(AccessLevel.PROTECTED)
     private final World currentWorld;
 
     /**
      * The future state of the world.
      */
+    @Getter(AccessLevel.PROTECTED)
     private final World futureWorld;
 
     /**
      * Maximum number of columns that a single thread will process.
      */
+    @Getter(AccessLevel.PROTECTED)
     private final int columnsPerThread;
 
     /**
      * Start y-index for processing.
      */
+    @Getter(AccessLevel.PROTECTED)
     private final int startColumn;
 
     /**
      * End y-index for processing.
      */
+    @Getter(AccessLevel.PROTECTED)
     private final int endColumn;
 
-    EvolveTask(final World currentWorld,
-               final World futureWorld,
-               final int columnsPerThread) {
+    EvolveTask(final World currentWorld, final World futureWorld, final int columnsPerThread) {
         this(currentWorld, futureWorld, 0, currentWorld.getWidth(), columnsPerThread);
     }
 
@@ -113,7 +120,7 @@ public class EvolveTask extends RecursiveAction {
                 int count = currentWorld.getLiveNeighboursCount(i, j);
 
                 if (currentWorld.getState(i, j) == Cell.ALIVE) {
-                    if (count < UNDERPOPULATION_THRESHOLD) {
+                    if (count <= UNDERPOPULATION_THRESHOLD) {
                         futureWorld.setState(i, j, Cell.DEAD);
                     } else if (count <= OVERPOPULATION_THRESHOLD) {
                         futureWorld.setState(i, j, Cell.ALIVE);

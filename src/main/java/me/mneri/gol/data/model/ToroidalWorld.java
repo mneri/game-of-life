@@ -18,14 +18,19 @@
 
 package me.mneri.gol.data.model;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+
+import java.io.Serializable;
 
 /**
  * The Game of Life world.
  *
  * @author Massimo Neri
  */
-public class ToroidalWorld implements World {
+public class ToroidalWorld implements Serializable, World {
+    private static final long serialVersionUID = -2034399144176374916L;
+
     /**
      * The number of live cells.
      */
@@ -35,19 +40,20 @@ public class ToroidalWorld implements World {
     /**
      * The current state of the world.
      */
-    private int[][] cells;
+    @Getter(AccessLevel.PROTECTED)
+    private final int[][] cells;
 
     /**
      * The height of the world expressed in number of cells.
      */
     @Getter
-    private int height;
+    private final int height;
 
     /**
      * The width of the world expressed in number of cells.
      */
     @Getter
-    private int width;
+    private final int width;
 
     /**
      * Construct a new {@code World} instance.
@@ -89,7 +95,7 @@ public class ToroidalWorld implements World {
             for (int i = -1; i <= 1; i++) {
                 if (j != 0 || i != 0) {
                     if (getState(x + i, y + j) == Cell.ALIVE) {
-                        count++;
+                        count = count + 1;
                     }
                 }
             }
